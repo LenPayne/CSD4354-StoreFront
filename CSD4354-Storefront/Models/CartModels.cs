@@ -8,8 +8,8 @@ namespace CSD4354_Storefront.Models
     public class Cart
     {
         public int Id { get; set; }
-        public List<ProductQty> Items { get; set; }
-        // public DateTime Date { get; set; }
+        public virtual List<ProductQty> Items { get; set; }
+        public DateTime Date { get; set; }
         public double Discount { get; set; }
         public String Tracking { get; set; }
         public double TaxRate { get; set; }

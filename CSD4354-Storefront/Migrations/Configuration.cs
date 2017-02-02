@@ -1,5 +1,6 @@
 namespace CSD4354_Storefront.Migrations
 {
+    using Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +27,11 @@ namespace CSD4354_Storefront.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+context.Products.AddOrUpdate(p => new { p.Name, p.Description, p.StockQuantity }, 
+    new Product { Name = "T-Shirt", Description = "Plain White Tee", StockQuantity = 400 },
+    new Product { Name = "Sweat Shirt", Description = "Rugged Hoodie", StockQuantity = 300 },
+    new Product { Name = "Under Shirt", Description = "Flimsy Covering", StockQuantity = 100 });
         }
     }
 }

@@ -29,6 +29,9 @@ namespace CSD4354_Storefront.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Cart cart = db.Carts.Find(id);
+            foreach (ProductQty item in cart.Items)
+                db.Entry(item).Reference(i => i.Item).Load();
+
             if (cart == null)
             {
                 return HttpNotFound();
@@ -135,12 +138,11 @@ namespace CSD4354_Storefront.Controllers
             if (cart == null)
             {
                 cart = new Cart();
-                cart.Id = 1;
+                if (cart.Items == null)
+                    cart.Items = new List<ProductQty>();
+                db.Carts.Add(cart);
             }
-            if (cart.Items == null)
-                cart.Items = new List<ProductQty>();
             cart.Items.Add(item);
-            db.Carts.Add(cart);
             db.SaveChanges();
             return RedirectToAction("Details", new { id = 1 });
         }
