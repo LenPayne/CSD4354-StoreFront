@@ -26,7 +26,16 @@ namespace CSD4354_Storefront.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var cartId = HttpContext.Session["cartId"];
+                Cart c = db.Carts.Find(cartId);
+                if (c == null)
+                {
+                    c = new Cart { Date = new DateTime(), Items = new List<ProductQty>() };
+                    db.Carts.Add(c);
+                }
+                db.SaveChanges();
+                HttpContext.Session["cartId"] = c.Id;
+                return RedirectToAction("Details", new { id = c.Id });
             }
             Cart cart = db.Carts.Find(id);
             foreach (ProductQty item in cart.Items)
@@ -134,17 +143,17 @@ namespace CSD4354_Storefront.Controllers
             ProductQty item = new ProductQty();
             item.Item = product;
             item.Quantity = quantity;
-            Cart cart = db.Carts.Find(1);
+            var cartId = HttpContext.Session["cartId"];
+            Cart cart = db.Carts.Find(cartId);
             if (cart == null)
             {
-                cart = new Cart();
-                if (cart.Items == null)
-                    cart.Items = new List<ProductQty>();
-                db.Carts.Add(cart);
+                cart = new Cart { Date = new DateTime(), Items = new List<ProductQty>() };
+                db.Carts.Add(cart);                
             }
             cart.Items.Add(item);
             db.SaveChanges();
-            return RedirectToAction("Details", new { id = 1 });
+            HttpContext.Session["cartId"] = cart.Id;
+            return RedirectToAction("Details", new { id = cart.Id });
         }
     }
 }
