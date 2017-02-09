@@ -28,10 +28,10 @@ namespace CSD4354_Storefront.Migrations
             //    );
             //
 
-context.Products.AddOrUpdate(p => new { p.Name, p.Description, p.StockQuantity }, 
-    new Product { Name = "T-Shirt", Description = "Plain White Tee", StockQuantity = 400 },
-    new Product { Name = "Sweat Shirt", Description = "Rugged Hoodie", StockQuantity = 300 },
-    new Product { Name = "Under Shirt", Description = "Flimsy Covering", StockQuantity = 100 });
+            context.Products.AddOrUpdate(p => new { p.Name, p.Description, p.StockQuantity },
+                new Product { Name = "T-Shirt", Description = "Plain White Tee", StockQuantity = 400 },
+                new Product { Name = "Sweat Shirt", Description = "Rugged Hoodie", StockQuantity = 300 },
+                new Product { Name = "Under Shirt", Description = "Flimsy Covering", StockQuantity = 100 });
         }
     }
 }

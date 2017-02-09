@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSD4354_Storefront.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,11 @@ namespace CSD4354_Storefront.Controllers
 {
     public class HomeController : Controller
     {
+        private StoreDbContext db = new StoreDbContext();
+
         public ActionResult Index()
         {
-            return View();
+            return View(db.Products.ToList());
         }
 
         public ActionResult About()
