@@ -5,6 +5,7 @@ using System.Web;
 
 namespace CSD4354_Storefront.Models
 {
+    public enum CartStatus { OPEN, CHECKING_OUT, PAID, SHIPPED }
     public class Cart
     {
         public int Id { get; set; }
@@ -15,6 +16,7 @@ namespace CSD4354_Storefront.Models
         public double TaxRate { get; set; }
         public int PaymentId { get; set; }
         public User Purchaser { get; set; }
+        public CartStatus Status { get; set; }
     }
 
     public class ProductQty

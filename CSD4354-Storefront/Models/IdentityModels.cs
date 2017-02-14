@@ -16,6 +16,8 @@ namespace CSD4354_Storefront.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public virtual User User { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

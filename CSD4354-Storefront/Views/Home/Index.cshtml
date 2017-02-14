@@ -51,11 +51,33 @@
                 @Html.DisplayFor(modelItem => item.Size)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", "Products", new { id = item.Id }, new { @class = "btn btn-lg btn-warning" }) |
-                @Html.ActionLink("Details", "Details", "Products", new { id = item.Id }, new { @class = "btn btn-lg btn-primary" }) |
-                @Html.ActionLink("Delete", "Delete", "Products", new { id = item.Id }, new { @class = "btn btn-lg btn-danger" })
+                @Html.ActionLink("Edit", "Edit", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" }) |
+                @Html.ActionLink("Details", "Details", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" }) |
+                @Html.ActionLink("Delete", "Delete", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", data_target = "okay" })
             </td>
         </tr>
     }
 
 </table>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img class="img-responsive" src="http://lorempixel.com/900/300/" />
+        </div>
+        <div class="col-md-4">
+            <h1>Hello World!</h1>
+        </div>
+        <div class="col-md-2">
+            <table class="table">
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Hello</td>
+                    <td>World</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
