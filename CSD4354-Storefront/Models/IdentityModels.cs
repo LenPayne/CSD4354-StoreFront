@@ -17,7 +17,7 @@ namespace CSD4354_Storefront.Models
             return userIdentity;
         }
 
-        public virtual User User { get; set; }
+        public int UserId { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

@@ -21,9 +21,13 @@ namespace CSD4354_Storefront.Controllers
         public ActionResult Index()
         {
             if (this.User != null)
-            {                
-                var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).User;
-                return View(db.Carts.Where(c => c.Purchaser.Id == user.Id).ToList());
+            {
+                var appUser = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+                if (appUser != null) { 
+                    var userId = appUser.UserId;
+                    var user = db.Users.Find(userId);
+                    return View(db.Carts.Where(c => c.Purchaser.Id == user.Id).ToList());
+                }
             }
             return View(db.Carts.ToList());
         }
@@ -37,7 +41,8 @@ namespace CSD4354_Storefront.Controllers
                 Cart c = db.Carts.Find(cartId);
                 if (c == null)
                 {
-                    var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).User;
+                    var userId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).UserId;
+                    var user = db.Users.Find(userId);
                     c = new Cart { Date = new DateTime(), Items = new List<ProductQty>(), Purchaser = user, Status = CartStatus.OPEN};
                     db.Carts.Add(c);
                     db.SaveChanges();
@@ -46,13 +51,14 @@ namespace CSD4354_Storefront.Controllers
                 return View(c);
             }
             Cart cart = db.Carts.Find(id);
-            foreach (ProductQty item in cart.Items)
-                db.Entry(item).Reference(i => i.Item).Load();
-
+            
             if (cart == null)
             {
                 return HttpNotFound();
             }
+            foreach (ProductQty item in cart.Items)
+                db.Entry(item).Reference(i => i.Item).Load();
+
             return View(cart);
         }
 
@@ -153,10 +159,11 @@ namespace CSD4354_Storefront.Controllers
             item.Quantity = quantity;
             var cartId = HttpContext.Session["cartId"];
             Cart cart = db.Carts.Find(cartId);
-            if (cart.Status == CartStatus.SHIPPED || cart.Status == CartStatus.PAID) cart = null;
+            if (cart != null && (cart.Status == CartStatus.SHIPPED || cart.Status == CartStatus.PAID)) cart = null;
             if (cart == null)
             {
-                var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).User;
+                var userId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).UserId;
+                var user = db.Users.Find(userId);
                 cart = new Cart {
                     Date = new DateTime(),
                     Items = new List<ProductQty>(),
@@ -175,12 +182,12 @@ namespace CSD4354_Storefront.Controllers
         {
             var cartId = HttpContext.Session["cartId"];
             Cart cart = db.Carts.Find(cartId);
-            foreach (ProductQty item in cart.Items)
-                db.Entry(item).Reference(i => i.Item).Load();
             if (cart == null)
             {
                 return RedirectToAction("Index");
             }
+            foreach (ProductQty item in cart.Items)
+                db.Entry(item).Reference(i => i.Item).Load();
             cart.Status = CartStatus.CHECKING_OUT;
             db.SaveChanges();           
             return View(cart);

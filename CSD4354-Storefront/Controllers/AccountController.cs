@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CSD4354_Storefront.Models;
+using CSD4354_Storefront.DAL;
 
 namespace CSD4354_Storefront.Controllers
 {
@@ -17,6 +18,7 @@ namespace CSD4354_Storefront.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private StoreDbContext db = new StoreDbContext();
 
         public AccountController()
         {
@@ -151,7 +153,10 @@ namespace CSD4354_Storefront.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, User = new Models.User() };
+                User u = new Models.User();
+                db.Users.Add(u);
+                db.SaveChanges(); 
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserId = u.Id };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -367,7 +372,10 @@ namespace CSD4354_Storefront.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, User = new Models.User() };
+                User u = new Models.User();
+                db.Users.Add(u);
+                db.SaveChanges();
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserId = u.Id };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

@@ -17,6 +17,7 @@ namespace CSD4354_Storefront.Models
         public int PaymentId { get; set; }
         public User Purchaser { get; set; }
         public CartStatus Status { get; set; }
+        
     }
 
     public class ProductQty
