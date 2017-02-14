@@ -25,8 +25,7 @@ namespace CSD4354_Storefront.Controllers
                 var appUser = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
                 if (appUser != null) { 
                     var userId = appUser.UserId;
-                    var user = db.Users.Find(userId);
-                    return View(db.Carts.Where(c => c.Purchaser.Id == user.Id).ToList());
+                    return View(db.Carts.Where(c => c.Purchaser.Id == userId).ToList());
                 }
             }
             return View(db.Carts.ToList());

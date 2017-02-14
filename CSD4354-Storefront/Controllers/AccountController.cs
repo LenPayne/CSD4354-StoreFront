@@ -375,7 +375,10 @@ namespace CSD4354_Storefront.Controllers
                 User u = new Models.User();
                 db.Users.Add(u);
                 db.SaveChanges();
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, UserId = u.Id };
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    UserId = u.Id };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
