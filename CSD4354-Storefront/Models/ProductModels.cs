@@ -13,11 +13,18 @@ namespace CSD4354_Storefront.Models
         public String Location { get; set; }
         public String Colour { get; set; }
         public String Size { get; set; }
+        public String ImageFilename { get; set; }
+        public String ThumbnailFilename { get; set; }
     }
 
     public class ProductDetailsViewModel
     {
         public Product Item { get; set; }
         public int Quantity { get; set; }
+    }
+    public class ProductEditViewModel
+    {
+        public Product Item { get; set; }
+        public HttpPostedFileBase File { get; set; }
     }
 }

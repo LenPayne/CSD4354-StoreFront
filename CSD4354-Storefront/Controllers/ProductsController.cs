@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using CSD4354_Storefront.DAL;
 using CSD4354_Storefront.Models;
+using System.IO;
+using System.Drawing;
 
 namespace CSD4354_Storefront.Controllers
 {
@@ -74,7 +76,7 @@ namespace CSD4354_Storefront.Controllers
             {
                 return HttpNotFound();
             }
-            return View(product);
+            return View(new ProductEditViewModel { Item = product });
         }
 
         // POST: Products/Edit/5
@@ -82,15 +84,43 @@ namespace CSD4354_Storefront.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StockQuantity,Location,Colour,Size")] Product product)
+        public ActionResult Edit([Bind(Include = "Item,File")] ProductEditViewModel pevm)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(product).State = EntityState.Modified;
+                if (pevm.File != null && pevm.File.ContentLength > 0)
+                {
+                    var imgFolder = "/Content/ProductImages/";
+                    // Saves the existing image to the server
+                    var filename = DateTime.Now.ToBinary().ToString("X") + Path.GetFileName(pevm.File.FileName);
+                    var path = Path.Combine(Server.MapPath("~" + imgFolder), filename);
+                    pevm.File.SaveAs(path);
+                    pevm.Item.ImageFilename = imgFolder + filename;
+
+                    // Resizes the existing image to 200px wide while retaining aspect ratio
+                    var thumbname = "t_" + filename;
+                    var thumbpath = Path.Combine(Server.MapPath("~" + imgFolder), thumbname);
+                    using (var srcImage = Image.FromFile(path))
+                    {
+                        var newWidth = 200;
+                        var newHeight = (int)(newWidth * srcImage.Height / srcImage.Width);
+                        using (var newImage = new Bitmap(newWidth, newHeight))
+                            using (var graphics = Graphics.FromImage(newImage))
+                        {
+                            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                            graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                            graphics.DrawImage(srcImage, new Rectangle(0, 0, newWidth, newHeight));
+                            newImage.Save(thumbpath);
+                        }
+                    }
+                    pevm.Item.ThumbnailFilename = imgFolder + thumbname;
+                }
+                db.Entry(pevm.Item).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(pevm.Item);
         }
 
         // GET: Products/Delete/5

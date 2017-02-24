@@ -291,9 +291,11 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Carts\AddToCart.cshtml" />
     <Content Include="Views\Carts\Checkout.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\HttpPostedFileBase.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\ProductImages\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>

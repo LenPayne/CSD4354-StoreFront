@@ -9,6 +9,8 @@
 <table class="table">
     <tr>
         <th>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
@@ -32,6 +34,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                <img class="img-responsive" src="@item.ThumbnailFilename" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -59,25 +64,3 @@
     }
 
 </table>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <img class="img-responsive" src="http://lorempixel.com/900/300/" />
-        </div>
-        <div class="col-md-4">
-            <h1>Hello World!</h1>
-        </div>
-        <div class="col-md-2">
-            <table class="table">
-                <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                </tr>
-                <tr>
-                    <td>Hello</td>
-                    <td>World</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
