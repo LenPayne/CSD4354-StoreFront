@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
+@{ 
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -25,7 +31,10 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Shop", "Index", "Products")</li>
-                    <li>@Html.ActionLink("My Cart", "Details", "Carts", new { id = HttpContext.Current.Session["cartId"] }, null)</li>
+                    @if (appUser != null)
+                    {
+                        <li>@Html.ActionLink("My Cart", "Details", "Carts", new { id = HttpContext.Current.Session["cartId"] }, null)</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

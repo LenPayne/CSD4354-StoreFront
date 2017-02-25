@@ -1,16 +1,21 @@
 ﻿@model CSD4354_Storefront.Models.Product
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
 
 @{
     ViewBag.Title = "Create";
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
 }
 
 <h2>Create</h2>
 
-
-@using (Html.BeginForm()) 
+@if (isAdmin)
 {
+    using (Html.BeginForm())
+    {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Product</h4>
         <hr />
@@ -69,7 +74,9 @@
             </div>
         </div>
     </div>
+    }
 }
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")

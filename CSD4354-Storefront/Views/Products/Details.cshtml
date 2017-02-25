@@ -1,7 +1,11 @@
 ﻿@model CSD4354_Storefront.Models.ProductDetailsViewModel
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
 
 @{
     ViewBag.Title = "Details";
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
 }
 
 <h2>Details</h2>
@@ -65,17 +69,27 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Item.Id }) |
+    @if (isAdmin) {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Item.Id }) @:|
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>
 <p>
-    @using (Html.BeginForm("AddToCart", "Carts", new { id = Model.Item.Id })) { 
-    @Html.EditorFor(model => model.Quantity)
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Add to Cart" class="btn btn-default" />
+    @if (appUser != null)
+    {
+        using (Html.BeginForm("AddToCart", "Carts", new { id = Model.Item.Id }))
+        {
+        @Html.EditorFor(model => model.Quantity)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add to Cart" class="btn btn-default" />
+            </div>
         </div>
-    </div>
+        }
+    }
+    else
+    {
+        @Html.ActionLink("Login to Add to Cart", "Login", "Account", null, new { @class = "btn btn-success" })
     }
 </p>
 

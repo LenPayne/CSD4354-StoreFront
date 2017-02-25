@@ -42,7 +42,14 @@ namespace CSD4354_Storefront.Controllers
                 {
                     var userId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).UserId;
                     var user = db.Users.Find(userId);
-                    c = new Cart { Date = new DateTime(), Items = new List<ProductQty>(), Purchaser = user, Status = CartStatus.OPEN};
+                    c = new Cart {
+                        Date = DateTime.Now,
+                        Items = new List<ProductQty>(),
+                        Purchaser = user,
+                        Status = CartStatus.OPEN,
+                        TaxRate = 0.13,
+                        Discount = 0
+                    };
                     db.Carts.Add(c);
                     db.SaveChanges();
                 }
@@ -164,10 +171,12 @@ namespace CSD4354_Storefront.Controllers
                 var userId = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).UserId;
                 var user = db.Users.Find(userId);
                 cart = new Cart {
-                    Date = new DateTime(),
+                    Date = DateTime.Now,
                     Items = new List<ProductQty>(),
                     Purchaser = user,
-                    Status = CartStatus.OPEN
+                    Status = CartStatus.OPEN,
+                    TaxRate = 0.13,
+                    Discount = 0                    
                 };
                 db.Carts.Add(cart);                
             }

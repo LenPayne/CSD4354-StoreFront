@@ -10,9 +10,12 @@
 
 <h2>Index</h2>
 
+@if (isAdmin)
+{
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
 <table class="table">
     <tr>
         <th></th>
@@ -67,7 +70,7 @@
                     {
                         @:| @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" })
                         @:| @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
-           }}
+                }}
             </td>
         </tr>
     }

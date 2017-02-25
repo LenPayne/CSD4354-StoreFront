@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<CSD4354_Storefront.Models.User>
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
 
 @{
     ViewBag.Title = "Index";
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
 }
 
 <h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -41,9 +41,10 @@
             @Html.DisplayFor(modelItem => item.Preferences)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Details", "Details", new { id = item.Id })
+            @if (isAdmin) { 
+                @:| @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+            }
         </td>
     </tr>
 }

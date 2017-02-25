@@ -1,7 +1,11 @@
 ﻿@model CSD4354_Storefront.Models.Cart
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
 
 @{
     ViewBag.Title = "Details";
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
 }
 
 <h2>Details</h2>
@@ -94,7 +98,10 @@
     </table>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @if (isAdmin)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @:|
+    }
     @Html.ActionLink("Continue Shopping", "Index", "Products") |
     @Html.ActionLink("Checkout", "Checkout")
 </p>

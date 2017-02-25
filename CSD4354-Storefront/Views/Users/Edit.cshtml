@@ -1,16 +1,21 @@
 ﻿@model CSD4354_Storefront.Models.User
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
 
 @{
     ViewBag.Title = "Edit";
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
 }
 
 <h2>Edit</h2>
 
-
-@using (Html.BeginForm())
+@if (isAdmin)
 {
+    using (Html.BeginForm())
+    {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>User</h4>
         <hr />
@@ -55,6 +60,7 @@
             </div>
         </div>
     </div>
+    }
 }
 
 <div>

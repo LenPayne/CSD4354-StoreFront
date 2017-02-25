@@ -1,16 +1,21 @@
 ﻿@model CSD4354_Storefront.Models.ProductEditViewModel
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
 
 @{
     ViewBag.Title = "Edit";
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
 }
 
 <h2>Edit</h2>
 
-
-@using (Html.BeginForm("Edit","Products",FormMethod.Post,new { enctype = "multipart/form-data" }))
+@if (isAdmin)
 {
+    using (Html.BeginForm("Edit", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Product</h4>
         <hr />
@@ -81,6 +86,7 @@
             </div>
         </div>
     </div>
+    }
 }
 
 <div>
