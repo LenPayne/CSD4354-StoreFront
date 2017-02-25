@@ -18,6 +18,7 @@ namespace CSD4354_Storefront.Models
         }
 
         public int UserId { get; set; }
+        public bool IsAdmin { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

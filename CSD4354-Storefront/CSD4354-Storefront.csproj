@@ -190,6 +190,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationMigrations\201702252041551_Update1.cs" />
+    <Compile Include="ApplicationMigrations\201702252041551_Update1.Designer.cs">
+      <DependentUpon>201702252041551_Update1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationMigrations\Configuration.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -305,6 +310,11 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ApplicationMigrations\201702252041551_Update1.resx">
+      <DependentUpon>201702252041551_Update1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

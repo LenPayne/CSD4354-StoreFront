@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<CSD4354_Storefront.Models.Product>
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
 
 @{
     ViewBag.Title = "Sal's Shirt Shop";
+    var appUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+    var isAdmin = appUser != null && appUser.IsAdmin;
 }
 
 <h2>Welcome to @ViewBag.Title</h2>
@@ -56,9 +60,12 @@
                 @Html.DisplayFor(modelItem => item.Size)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" }) |
-                @Html.ActionLink("Details", "Details", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" }) |
-                @Html.ActionLink("Delete", "Delete", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", data_target = "okay" })
+                @Html.ActionLink("Details", "Details", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })
+                @{ if (isAdmin)
+                    {
+                        @:| @Html.ActionLink("Edit", "Edit", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" })
+                        @:| @Html.ActionLink("Delete", "Delete", "Products", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", data_target = "okay" })
+                }}
             </td>
         </tr>
     }
